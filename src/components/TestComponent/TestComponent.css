@@ -1,0 +1,14 @@
+.TestComponent {
+    font-size: large;
+    font-weight: bold;
+    color: darkcyan;
+    background: wheat;
+    border: thin solid blue;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.TestComponent:hover {
+    color: blueviolet;
+    font-size: larger;
+}
