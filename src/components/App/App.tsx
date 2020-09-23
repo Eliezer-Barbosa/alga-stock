@@ -7,7 +7,7 @@ import ClassComponent from '../ClassComponent'
 function App() {
   return (
     <div className="App">
-      <TestComponent/>
+      <TestComponent name = 'Barbosa!!'/>
       <ClassComponent/>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

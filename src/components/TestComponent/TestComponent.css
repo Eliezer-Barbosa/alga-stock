@@ -12,3 +12,7 @@
     color: blueviolet;
     font-size: larger;
 }
+
+button {
+    margin: 5px;
+}
