@@ -1,7 +1,8 @@
 import React from 'react';
 import Header from '../Header';
-import Button from '../Button'
+import Button from '../../shared/Button'
 import './App.css';
+import Container from '../../shared/Container';
 
 /**
  * component created to demonstrate
@@ -16,18 +17,20 @@ function App() {
     <div className="App">
       <Header title='AlgaStock'/>
 
-      <div className="Container">
-        <Button
-          // content="content is ME" 
-          onClick={() => window.alert('ola')} // function as prop
-          appendIcon={<TestComponent />} // component as prop
-          >
-            {/* everything inside the component is its children. */}
-            <p>CHILDREN</p>
-            <p>ALSO CHILDREN</p>
-            <TestComponent /> {/* component is children here */}
-          </Button>
-      </div>
+      <Container>
+      <Button
+        // content="content is ME" 
+        onClick={() => window.alert('ola')} // function as prop
+        appendIcon={<TestComponent />} // component as prop
+        >
+          {/* everything inside the component is its children. */}
+          <p>CHILDREN</p>
+          <p>ALSO CHILDREN</p>
+          <TestComponent /> {/* component is children here */}
+        </Button>
+
+      </Container>
+      
     </div>
   );
 }
