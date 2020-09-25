@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../Header';
 import Button from '../../shared/Button'
 import './App.css';
 import Container from '../../shared/Container';
+import Input from '../../shared/Input';
+import { setSyntheticTrailingComments } from 'typescript';
 
 /**
  * component created to demonstrate
@@ -13,22 +15,28 @@ function TestComponent () {
 }
 
 function App() {
+  const [street, setStreet] = useState('')
   return (
     <div className="App">
       <Header title='AlgaStock'/>
 
       <Container>
-      <Button
-        // content="content is ME" 
-        onClick={() => window.alert('ola')} // function as prop
-        appendIcon={<TestComponent />} // component as prop
+        <Button
+          // content="content is ME" 
+          onClick={() => window.alert('ola')} // function as prop
+          appendIcon={<TestComponent />} // component as prop
         >
           {/* everything inside the component is its children. */}
           <p>CHILDREN</p>
           <p>ALSO CHILDREN</p>
           <TestComponent /> {/* component is children here */}
         </Button>
-
+        <Input 
+          label="street"
+          placeholder="5th Avenue"
+          value={street}
+          onChange={e => setStreet(e.target.value) }
+        />
       </Container>
       
     </div>
