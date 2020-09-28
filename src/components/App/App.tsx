@@ -15,7 +15,9 @@ const headers: TableHeader[] = [
 
 function App() {
   const [products, setProducts] = useState(Products);
-  const [updatingProduct, setUpdatingProduct] = useState<Product | undefined>(products[0])
+  const [updatingProduct, setUpdatingProduct] = useState<Product | undefined>(
+    products[0]
+  );
 
   const handleProductSubmit = (product: ProductCreator) => {
     setProducts([
@@ -34,7 +36,7 @@ function App() {
       )
     );
 
-    setUpdatingProduct(undefined)
+    setUpdatingProduct(undefined);
   };
 
   return (
@@ -42,7 +44,14 @@ function App() {
       <Header title="AlgaStock" />
 
       <Container>
-        <Table headers={headers} data={products} />
+        <Table
+          headers={headers}
+          data={products}
+          enableActions
+          onDelete={console.log}
+          onDetail={console.log}
+          onEdit={console.log}
+        />
 
         <ProductForm
           form={updatingProduct}

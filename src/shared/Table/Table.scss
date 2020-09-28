@@ -1,41 +1,48 @@
 table.AppTable {
-    width: 100%;
-    box-shadow: 0 3px 6px rgba(#000, .1);
-    border-collapse: collapse;
+  width: 100%;
+  box-shadow: 0 3px 6px rgba(#000, 0.1);
+  border-collapse: collapse;
 
-    thead {
-        background-color: #09F;
+  thead {
+    background-color: #09f;
 
-        tr th {
-            color: rgba(#FFF, .8);
-            text-align: left;
-            padding: 7px 10px;
-            font-size: .8em;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: .75px;
+    tr th {
+      color: rgba(#fff, 0.8);
+      text-align: left;
+      padding: 7px 10px;
+      font-size: 0.8em;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
 
-            // th (parent) with class name "right"
-            &.right {
-                text-align: right;
-            }
-        }
+      // th (parent) with class name "right"
+      &.right {
+        text-align: right;
+      }
     }
+  }
 
-    tbody {
-        tr {
-            &:hover { // & means apply hover only on the tr (parent) element, not its children (td)
-                background-color: rgba(#000, .05);
-            }
-            td {
-                padding: 7px 10px;
-                color: #222;
+  tbody {
+    tr {
+      &:hover {
+        // & means apply hover only on the tr (parent) element, not its children (td)
+        background-color: rgba(#000, 0.05);
+      }
+      td {
+        padding: 7px 10px;
+        color: #222;
 
-                // td (parent) with class name "right"
-                &.right {
-                    text-align: right;
-                }
-            }
+        // td (parent) with class name "right"
+        &.right {
+          text-align: right;
         }
+      }
     }
+  }
+
+  .actions {
+    > *:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
 }
