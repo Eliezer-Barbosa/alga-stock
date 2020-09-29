@@ -41,8 +41,8 @@ const ProductForm: React.FC<ProductFormProps> = (props) => {
   const [form, setForm] = useState(initialFormState);
 
   useEffect(() => {
-    setForm(initialFormState)
-  }, [props.form])
+    setForm(initialFormState);
+  }, [props.form]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -110,7 +110,7 @@ const ProductForm: React.FC<ProductFormProps> = (props) => {
         placeholder="E.g.: 15"
         required
       />
-      <Button>Submit</Button>
+      <Button>{form.id ? 'Update' : 'Submit'}</Button>
     </Form>
   );
 };
