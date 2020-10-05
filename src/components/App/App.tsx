@@ -6,7 +6,12 @@ import Table, { TableHeader } from '../../shared/Table';
 import { Product } from '../../shared/Table/Table.mockdata';
 import ProductForm, { ProductCreator } from '../Products/ProductForm';
 import Swal from 'sweetalert2';
-import { getAllProducts } from '../../services/Products.service';
+import {
+  createSingleProduct,
+  deleteSingleProduct,
+  getAllProducts,
+  updateSingleProduct,
+} from '../../services/Products.service';
 
 const headers: TableHeader[] = [
   { key: 'id', value: '#' },
@@ -21,36 +26,42 @@ function App() {
     undefined
   );
 
+  async function fetchData() {
+    const _products = await getAllProducts();
+    setProducts(_products);
+  }
+
   useEffect(() => {
-    async function fetchData() {
-      const _products = await getAllProducts();
-      setProducts(_products);
-    }
     fetchData();
   }, []);
 
-  const handleProductSubmit = (product: ProductCreator) => {
-    setProducts([
-      ...products,
-      {
-        _id: String(products.length + 1),
-        ...product,
-      },
-    ]);
+  const handleProductSubmit = async (product: ProductCreator) => {
+    try {
+      await createSingleProduct(product);
+      fetchData();
+    } catch (err) {
+      Swal.fire('Ooops!', err.message, 'error');
+    }
   };
 
-  const handleProductUpdate = (newProduct: Product) => {
-    setProducts(
-      products.map((product) =>
-        product._id === newProduct._id ? newProduct : product
-      )
-    );
-
-    setUpdatingProduct(undefined);
+  const handleProductUpdate = async (newProduct: Product) => {
+    try {
+      await updateSingleProduct(newProduct);
+      setUpdatingProduct(undefined); // clear the form
+      fetchData();
+    } catch (err) {
+      Swal.fire('Ooops!', err.message, 'error');
+    }
   };
 
-  const deleteProduct = (id: string) => {
-    setProducts(products.filter((product) => product._id !== id));
+  const deleteProduct = async (id: string) => {
+    try {
+      await deleteSingleProduct(id);
+      fetchData();
+      Swal.fire('Uhul!', 'Product successfully deleted!', 'success');
+    } catch (err) {
+      Swal.fire('Ooops!', err.message, 'error');
+    }
   };
 
   const handleProductDelete = (product: Product) => {
@@ -64,9 +75,7 @@ function App() {
       confirmButtonText: `Yes, delete ${product.name}!`,
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log('Confirmed');
         deleteProduct(product._id);
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
     });
   };
