@@ -1,5 +1,5 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import thunk, { ThunkAction } from 'redux-thunk';
 import Products from './Products/Products.reducer';
 
 const reducers = combineReducers({
@@ -15,4 +15,13 @@ const store = createStore(
   )
 );
 
+export interface Action<T = any> {
+  type: string
+  payload?: T
+}
+
+export type Thunk<T = any> =
+  ThunkAction<void, typeof reducers, unknown, Action<T>>
+
 export default store;
+ 
