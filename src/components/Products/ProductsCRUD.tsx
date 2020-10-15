@@ -50,6 +50,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
     dispatch(ProductsAction.deleteProduct(id))
       .then(() => {
         Swal.fire('Uhul!', 'Product successfully deleted!', 'success');
+        setUpdatingProduct(undefined);
       })
       .catch(showErrorAlert);
   };
