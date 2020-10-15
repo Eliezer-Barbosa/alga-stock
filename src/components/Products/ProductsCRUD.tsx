@@ -3,9 +3,9 @@ import Swal from 'sweetalert2';
 import Table, { TableHeader } from '../../shared/Table';
 import { Product } from '../../shared/Table/Table.mockdata';
 import ProductForm, { ProductCreator } from './ProductForm';
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch } from 'react-redux';
 import * as ProductsAction from '../../redux/Products/Products.actions';
-import { RootState } from '../../redux';
+import { RootState, ThunkDispatch } from '../../redux';
 
 const headers: TableHeader[] = [
   { key: 'id', value: '#' },
@@ -15,52 +15,43 @@ const headers: TableHeader[] = [
 ];
 
 declare interface ProductsCRUDProps {
-    products: Product[]
+  products: Product[];
 }
 
 const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
-  const dispatch = useDispatch()
-  // const [products, setProducts] = useState<Product[]>([]);
+  const dispatch: ThunkDispatch = useDispatch();
+
+  const showErrorAlert = (err: Error) =>
+    Swal.fire('Oops!', err.message, 'error');
+
   const [updatingProduct, setUpdatingProduct] = useState<Product | undefined>(
     undefined
   );
-
-  async function fetchData() {
-    try {
-      await dispatch(ProductsAction.getProducts());
-    } catch (err) {
-        Swal.fire('Oops!', err.message, 'error')
-    }
-  }
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  async function fetchData() {
+    dispatch(ProductsAction.getProducts()).catch(showErrorAlert);
+  }
+
   const handleProductSubmit = async (product: ProductCreator) => {
-    try {
-      dispatch(ProductsAction.insertNewProduct(product))
-    } catch (err) {
-      Swal.fire('Ooops!', err.message, 'error');
-    }
+    dispatch(ProductsAction.insertNewProduct(product)).catch(showErrorAlert);
   };
 
   const handleProductUpdate = async (newProduct: Product) => {
-    try {
-      await dispatch(ProductsAction.updateProduct(newProduct));
-      setUpdatingProduct(undefined); // clear the form
-    } catch (err) {
-      Swal.fire('Ooops!', err.message, 'error');
-    }
+    dispatch(ProductsAction.updateProduct(newProduct))
+      .then(() => setUpdatingProduct(undefined))
+      .catch(showErrorAlert);
   };
 
   const deleteProduct = async (id: string) => {
-    try {
-      await dispatch(ProductsAction.deleteProduct(id));
-      Swal.fire('Uhul!', 'Product successfully deleted!', 'success');
-    } catch (err) {
-      Swal.fire('Ooops!', err.message, 'error');
-    }
+    dispatch(ProductsAction.deleteProduct(id))
+      .then(() => {
+        Swal.fire('Uhul!', 'Product successfully deleted!', 'success');
+      })
+      .catch(showErrorAlert);
   };
 
   const handleProductDelete = (product: Product) => {
@@ -72,11 +63,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
       confirmButtonColor: '#09F',
       cancelButtonColor: '#d33',
       confirmButtonText: `Yes, delete ${product.name}!`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteProduct(product._id);
-      }
-    });
+    }).then(({ value }) => value && deleteProduct(product._id));
   };
 
   const handleProductDetail = (product: Product) => {
@@ -87,9 +74,6 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
     );
   };
 
-  const handleProductEdit = (product: Product) => {
-    setUpdatingProduct(product);
-  };
   return (
     <>
       <Table
@@ -98,7 +82,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
         enableActions
         onDelete={handleProductDelete}
         onDetail={handleProductDetail}
-        onEdit={handleProductEdit}
+        onEdit={setUpdatingProduct}
       />
 
       <ProductForm
@@ -111,7 +95,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-    products: state.products
-})
+  products: state.products,
+});
 
 export default connect(mapStateToProps)(ProductsCRUD);
