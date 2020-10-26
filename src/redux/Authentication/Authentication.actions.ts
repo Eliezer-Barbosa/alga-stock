@@ -1,4 +1,4 @@
-import { signInUser } from './../../services/Authentication.service';
+import { signInUser } from '../../services/Authentication.service';
 import { Thunk } from '..';
 
 declare interface Credentials {
