@@ -5,6 +5,8 @@ import { login } from '../../redux/Authentication/Authentication.actions';
 import Button from '../../shared/Button';
 import Form from '../../shared/Form';
 import Input from '../../shared/Input';
+import { useHistory } from 'react-router-dom'
+
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -13,9 +15,12 @@ const LoginForm = () => {
     pass: '',
   });
 
+  const history = useHistory()
+
   const handleLogin = async () => {
     try {
-      await dispatch(login(form))
+      await dispatch(login(form));
+      history.push('/')
     } catch (err) {
       Swal.fire('Error', err.response?.data?.message || err.message, 'error');
     }
@@ -30,25 +35,25 @@ const LoginForm = () => {
     });
   };
 
-  return (
-    <Form title="Login - Algastock" onSubmit={handleLogin}>
-      <Input
-        label="User"
-        name="user"
-        value={form.user}
-        onChange={handleInputChange}
-        placeholder="E.g.: your_user_name321"
-      />
-      <Input
-        type="password"
-        name="pass"
-        value={form.pass}
-        onChange={handleInputChange}
-        label="Password"
-      />
-      <Button> Login </Button>
-    </Form>
-  );
-};
+  return <Form title="Login - AlgaStock" onSubmit={handleLogin}>
+  <Input
+    label="User"
+    name="user"
+    value={form.user}
+    onChange={handleInputChange}
+    placeholder="E.g.: your_user_name321"
+  />
+  <Input
+    type="password"
+    name="pass"
+    value={form.pass}
+    onChange={handleInputChange}
+    label="Passowrd"
+  />
+  <Button>
+    Login
+  </Button>
+</Form>
+}
 
 export default LoginForm;
